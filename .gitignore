@@ -18,3 +18,5 @@ temp.errors
 *.ini
 .d/
 .cache/
+ a.out
+test.c

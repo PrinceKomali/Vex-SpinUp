@@ -29,6 +29,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+  adi_pin_mode(Pneumatic, OUTPUT);
 	motor_config(LeftFront, COAST, GREEN, true);
 	motor_config(RightFront, COAST, GREEN, false);
 	motor_config(LeftBack, COAST, GREEN, true);

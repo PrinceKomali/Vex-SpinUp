@@ -14,8 +14,9 @@
 #define Fly2 8
 
 #define LeftBack 4
-
+#define Pneumatic 'H'
 
 #define __RECIEVER 9
+
 
 #endif
