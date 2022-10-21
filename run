@@ -1,1 +1,1 @@
-./upload && sudo pros v5 run
+./upload && echo | sudo pros v5 run

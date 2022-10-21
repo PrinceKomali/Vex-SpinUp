@@ -1,7 +1,9 @@
 #include "main.h"
 #include "opcontrol.h"
+#include "auton.h"
 #include "code_from_arizona.h"
 #include "ports.h"
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -69,7 +71,6 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
 
 /**
  * Runs the operator control code. This function will be started in its own task
