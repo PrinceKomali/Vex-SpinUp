@@ -5,7 +5,7 @@
 #include "pros/adi.h"
 #include "pros/rtos.h"
 
-#define AUTON_FLY_SPEED 9700
+#define AUTON_FLY_SPEED 8950
 #define INTAKE_SPEED 600
 
 #define forwards(b,a) \
@@ -55,11 +55,14 @@ void autonomous() {
     delay(110);
     forwards(0, 0)
     
-    delay(1300);
+    delay(1500);
     piston_up;
     conv_start;
-
-	delay(2000);
+    delay(350);
+    conv_stop;
+    delay(2000);
+    conv_start;
+	delay(1500);
     conv_stop;
     fly_stop;
     forwards(-200,200)
@@ -67,11 +70,11 @@ void autonomous() {
     forwards(-200,-200);
     delay(750);
     forwards(0, -200);
-    delay(500);
+    delay(520);
     forwards(-30, -30);
     delay(1000);
     conv_reverse;
-    delay(500);
+    delay(120);
     forwards(0, 0);
     conv_stop;
 }

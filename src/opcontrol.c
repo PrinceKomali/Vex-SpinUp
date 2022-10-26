@@ -9,7 +9,7 @@
 
 #include "ctrl.h"
 
-#define FLY_SPEED 8700
+#define FLY_SPEED 9000
 
 int a_toggle = 0;
 int pressed_a = 0;
