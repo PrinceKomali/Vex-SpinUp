@@ -8,4 +8,11 @@
 #define A controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)
 #define B controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_B)
 #define Y controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_Y)
+#define X controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)
+#define D_UP controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP)
+#define D_DOWN controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN)
+#define D_RIGHT controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_RIGHT)
+#define D_LEFT controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_LEFT)
+#define ZL controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2)
+
 #endif

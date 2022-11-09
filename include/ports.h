@@ -15,6 +15,7 @@
 
 #define LeftBack 4
 #define Pneumatic 'H'
+#define Launcher 'G'
 
 #define __RECIEVER 9
 

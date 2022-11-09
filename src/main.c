@@ -32,6 +32,7 @@ void on_center_button() {
  */
 void initialize() {
   adi_pin_mode(Pneumatic, OUTPUT);
+  adi_pin_mode(Launcher, OUTPUT);
 	motor_config(LeftFront, COAST, GREEN, true);
 	motor_config(RightFront, COAST, GREEN, false);
 	motor_config(LeftBack, COAST, GREEN, true);

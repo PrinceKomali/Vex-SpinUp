@@ -6,6 +6,8 @@
 #include "pros/rtos.h"
 
 #define AUTON_FLY_SPEED 8950
+#define AUTON_FLY_SPEED_2 9200 
+
 #define INTAKE_SPEED 600
 
 #define forwards(b,a) \
@@ -17,6 +19,11 @@
 #define fly_start \
     motor_move_voltage(Fly1, -(AUTON_FLY_SPEED)); \
 	motor_move_voltage(Fly2, (AUTON_FLY_SPEED));
+
+#define fly_start_2 \
+    motor_move_voltage(Fly1, -(AUTON_FLY_SPEED_2)); \
+	motor_move_voltage(Fly2, (AUTON_FLY_SPEED_2));
+    // why
 
 #define fly_stop \
     motor_move_voltage(Fly1, 0); \
@@ -58,11 +65,12 @@ void autonomous() {
     delay(1500);
     piston_up;
     conv_start;
-    delay(350);
+    delay(400);
     conv_stop;
+    fly_start_2;
     delay(2000);
     conv_start;
-	delay(1500);
+	delay(2000);
     conv_stop;
     fly_stop;
     forwards(-200,200)
@@ -74,7 +82,7 @@ void autonomous() {
     forwards(-30, -30);
     delay(1000);
     conv_reverse;
-    delay(120);
+    delay(130);
     forwards(0, 0);
     conv_stop;
 }
