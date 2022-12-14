@@ -1,8 +1,9 @@
 #include "main.h"
-#include "opcontrol.h"
 #include "auton.h"
 #include "code_from_arizona.h"
+#include "opcontrol.h"
 #include "ports.h"
+#include "pros/imu.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -11,17 +12,14 @@
  * "I was pressed!" and nothing.
  */
 
-
-
-
 void on_center_button() {
-  static bool pressed = false;
-  pressed = !pressed;
-  if (pressed) {
-    lcd_set_text(2, "I was pressed!");
-  } else {
-    lcd_clear_line(2);
-  }
+    static bool pressed = false;
+    pressed = !pressed;
+    if (pressed) {
+        lcd_set_text(2, "I was pressed!");
+    } else {
+        lcd_clear_line(2);
+    }
 }
 
 /**
@@ -31,16 +29,17 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  adi_pin_mode(Pneumatic, OUTPUT);
-  adi_pin_mode(Launcher, OUTPUT);
-	motor_config(LeftFront, COAST, GREEN, true);
-	motor_config(RightFront, COAST, GREEN, false);
-	motor_config(LeftBack, COAST, GREEN, true);
-	motor_config(RightBack, COAST, GREEN, false);
-	motor_config(BottomIntake, COAST, BLUE, false);
-	motor_config(TopIntake, COAST, BLUE, false);
-  lcd_initialize();
-  lcd_register_btn0_cb(on_center_button);
+    adi_pin_mode(Pneumatic, OUTPUT);
+    adi_pin_mode(Launcher, OUTPUT);
+    imu_reset(GYRO);
+    motor_config(LeftFront, COAST, GREEN, true);
+    motor_config(RightFront, COAST, GREEN, false);
+    motor_config(LeftBack, COAST, GREEN, true);
+    motor_config(RightBack, COAST, GREEN, false);
+    motor_config(BottomIntake, COAST, BLUE, false);
+    motor_config(TopIntake, COAST, BLUE, false);
+    lcd_initialize();
+    lcd_register_btn0_cb(on_center_button);
 }
 
 /**
@@ -86,4 +85,3 @@ void competition_initialize() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-

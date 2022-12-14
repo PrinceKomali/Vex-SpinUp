@@ -14,5 +14,7 @@
 #define D_RIGHT controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_RIGHT)
 #define D_LEFT controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_LEFT)
 #define ZL controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2)
+#define L controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1)
+#define R controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1)
 
 #endif

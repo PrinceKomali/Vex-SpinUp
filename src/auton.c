@@ -3,10 +3,13 @@
 #include "main.h"
 #include "ports.h"
 #include "pros/adi.h"
+#include "pros/imu.h"
+#include "pros/motors.h"
 #include "pros/rtos.h"
+#include "pros/vision.h"
 
-#define AUTON_FLY_SPEED 8950
-#define AUTON_FLY_SPEED_2 9200 
+#define AUTON_FLY_SPEED 10000
+#define AUTON_FLY_SPEED_2 9500 
 
 #define INTAKE_SPEED 600
 
@@ -50,40 +53,63 @@
     motor_move_velocity(LeftFront, -v); \
     motor_move_velocity(LeftBack, v);
 
-void autonomous() {
-    fly_start;
-    piston_down;
-    forwards(14, 200);
-    delay(500);
 
-    forwards(190, 30);
-    delay(800);
-    forwards(100, 100);
-    delay(110);
-    forwards(0, 0)
-    
-    delay(1500);
-    piston_up;
+#define TARGET -5
+
+#define sign(n) ((int)n/abs((int)n))
+
+double s;
+double diff = 360; 
+void autonomous() {
+    diff = 999999;
+    imu_reset(GYRO);
+    forwards(-50, -50);
     conv_start;
-    delay(400);
+    delay(200);
     conv_stop;
-    fly_start_2;
-    delay(2000);
-    conv_start;
-	delay(2000);
-    conv_stop;
-    fly_stop;
-    forwards(-200,200)
-    delay(350);
-    forwards(-200,-200);
-    delay(750);
-    forwards(0, -200);
-    delay(520);
-    forwards(-30, -30);
-    delay(1000);
-    conv_reverse;
-    delay(130);
+    forwards(100,100);
+    delay(200);
     forwards(0, 0);
+    while(imu_get_heading(GYRO) > 360) {}
+    conv_reverse;
+    delay(200);
     conv_stop;
+    while(fabs(diff) > .7) {
+        double rot = imu_get_heading(GYRO);
+        double n = rot > 180 ? rot - 360 : rot;
+        double t = TARGET > 180 ? 360 - TARGET : TARGET; 
+           
+
+        diff = t - n;
+        s = fabs(diff) > 10 ? 12000 : fmax(fabs(diff)*500, 2000);
+        s *= sign(diff);
+        motor_move_voltage(RightFront,s);
+        motor_move_voltage(LeftFront,-s);
+        motor_move_voltage(RightBack, s);
+        motor_move_voltage(LeftBack, -s);
+    }
+    forwards(0,0);
+    fly_start;
+    delay(3000);
+    conv_start;
+    fly_start;
+    delay(500);
+    conv_stop;
+    fly_start;
+    delay(3000);
+    conv_start;
+    // fly_stop;
 }
 
+
+void _autonomous() {
+    while(1) {
+    vision_signature_s_t red_sig = vision_signature_from_utility(1, 7555, 9499, 8526, -1087, -263, -674, 3.000, 0);
+    vision_object_s_t rtn = vision_get_by_size(1, 0);
+    char buf[100];
+    snprintf(buf, 100, "%d    %d      ", rtn.x_middle_coord, rtn.y_middle_coord); 
+		
+	controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
+    delay(100);
+    }
+}

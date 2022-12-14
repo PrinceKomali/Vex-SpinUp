@@ -1,8 +1,8 @@
 #ifndef _PORTS_
 #define _PORTS_ 
 
-#define TopIntake 1
-#define BottomIntake 2
+#define TopIntake 2
+#define BottomIntake 11
 #define RightFront 3
 #define LeftBack 4
 #define RightBack 5
@@ -19,5 +19,6 @@
 
 #define __RECIEVER 9
 
+#define GYRO 18
 
 #endif
