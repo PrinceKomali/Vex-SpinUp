@@ -55,8 +55,9 @@ void opcontrol() {
     int s = 0;
     while (1) {
         double rot = imu_get_heading(GYRO);
+        double n = rot > 180 ? rot - 360 : rot;
         if(R) {
-            double n = rot > 180 ? rot - 360 : rot;
+            
             double t = TARGET > 180 ? 360 - TARGET : TARGET; 
             /*
 
@@ -125,7 +126,7 @@ void opcontrol() {
 
         controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
         char b2[100];
-        snprintf(b2, 100, "%.3f           %d    ", rot, (int)(diff));
+        snprintf(b2, 100, "%.3f           %.3f    ", rot, n);
         controller_set_text(E_CONTROLLER_MASTER, 2, 1, b2);
         if(L) {
             imu_reset(GYRO);

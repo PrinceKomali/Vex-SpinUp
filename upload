@@ -1,1 +1,1 @@
-pros make && sudo pros upload
+pros make && echo n | sudo pros upload || echo -e "\x1b[31mRERUN\x1b[0m"
