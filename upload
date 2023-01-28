@@ -1,1 +1,5 @@
-pros make && echo n | sudo pros upload || echo -e "\x1b[31mRERUN\x1b[0m"
+#!/bin/bash
+# if [ $# -eq 0 ]; then
+# A="--slot $1"
+# fi
+pros make && echo n | sudo pros upload $@ || echo -e "\x1b[31mRERUN\x1b[0m"

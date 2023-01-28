@@ -1,0 +1,28 @@
+#!/bin/bash
+echo -e "\x1b[32mClearing old programs...\x1b[0m"
+./rmall
+
+echo -e "\x1b[32mBuilding Non-Skills\x1b[0m"
+echo "void autonomous() {auton_short();};" > src/mode.txt
+pros make || exit 1
+echo -e "\x1b[32mUploading Non-Skills to slot 1...\x1b[0m"
+cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NotSkills"/' > temp
+mv temp project.pros
+sudo pros upload --slot 1
+
+echo -e "\x1b[32mBuilding Skills\x1b[0m"
+echo "void autonomous() {auton_long();};" > src/mode.txt
+pros make || exit 1
+echo -e "\x1b[32mUploading Non-Skills to slot 2...\x1b[0m"
+cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "Skills"/' > temp
+mv temp project.pros
+sudo pros upload --slot 2
+
+echo -e "\x1b[32mBuilding No-Auton\x1b[0m"
+echo "void autonomous() {return;};" > src/mode.txt
+pros make || exit 1
+echo -e "\x1b[32mUploading No-Auton to slot 3...\x1b[0m"
+cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NoAuton"/' > temp
+mv temp project.pros
+sudo pros upload --slot 3
+

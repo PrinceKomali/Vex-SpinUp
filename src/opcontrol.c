@@ -38,6 +38,8 @@ int pressed_down = 0;
 int pressed_right = 0;
 int pressed_left = 0;
 
+int exp_n = 0;
+
 void set_stage() {
     FLY_SPEED = ((int[]){STAGE_1, STAGE_2, STAGE_3, STAGE_4})[STAGE_NUM];
 }
@@ -229,8 +231,9 @@ void opcontrol() {
                 pressed_left = 0;
             if (X)
                 FLY_SPEED = get_stage();
+            if(ZL && X) exp_n = 1;
 
-            adi_digital_write(Launcher, ZL * X * 5);
+            adi_digital_write(Launcher, exp_n * 5);
             adi_digital_write(Pneumatic, y_toggle * 5);
             motor_move_voltage(Fly1, B * -(FLY_SPEED));
             motor_move_voltage(Fly2, B * (FLY_SPEED));
