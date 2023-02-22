@@ -49,6 +49,21 @@ int get_stage() {
 
 int vision_check = 0;
 
+double target_speed = 360;
+void set_fly_speed() {
+    int r = rotation_get_velocity(0); // or whatever port it is
+    if(r > target_speed) {
+        motor_move_voltage(Fly1, 0);
+        motor_move_voltage(Fly2, 0);
+    } else {
+        motor_move_voltage(Fly1, B * -12000);
+        motor_move_voltage(Fly2, B * 12000);
+    }
+}
+
+
+
+
 void opcontrol() {
     vision_signature_s_t red_sig = vision_signature_from_utility(
             1, 7555, 9499, 8526, -1087, -263, -674, 3.000, 0);

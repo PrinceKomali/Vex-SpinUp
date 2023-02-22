@@ -31,7 +31,6 @@ void on_center_button() {
 void initialize() {
     adi_pin_mode(Pneumatic, OUTPUT);
     adi_pin_mode(Launcher, OUTPUT);
-    imu_reset(GYRO);
     motor_config(LeftFront, COAST, GREEN, true);
     motor_config(RightFront, COAST, GREEN, false);
     motor_config(LeftBack, COAST, GREEN, true);
@@ -40,6 +39,9 @@ void initialize() {
     motor_config(TopIntake, COAST, BLUE, false);
     lcd_initialize();
     lcd_register_btn0_cb(on_center_button);
+    imu_reset(GYRO);
+    while(imu_get_heading(GYRO) > 360) {}
+    controller_set_text(E_CONTROLLER_MASTER, 0, 1, "IMU CALIBRATED`");
 }
 
 /**

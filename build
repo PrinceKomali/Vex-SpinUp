@@ -18,11 +18,19 @@ cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "Skills"/' > t
 mv temp project.pros
 sudo pros upload --slot 2
 
-echo -e "\x1b[32mBuilding No-Auton\x1b[0m"
-echo "void autonomous() {return;};" > src/mode.txt
+# echo -e "\x1b[32mBuilding No-Auton\x1b[0m"
+# echo "void autonomous() {return;};" > src/mode.txt
+# pros make || exit 1
+# echo -e "\x1b[32mUploading No-Auton to slot 3...\x1b[0m"
+# cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NoAuton"/' > temp
+# mv temp project.pros
+# sudo pros upload --slot 3
+
+echo -e "\x1b[32mBuilding Right-Auton\x1b[0m"
+echo "void autonomous() {auton_short_right();};" > src/mode.txt
 pros make || exit 1
-echo -e "\x1b[32mUploading No-Auton to slot 3...\x1b[0m"
-cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NoAuton"/' > temp
+echo -e "\x1b[32mUploading Right-Auton to slot 3...\x1b[0m"
+cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "RightAuton"/' > temp
 mv temp project.pros
 sudo pros upload --slot 3
 
