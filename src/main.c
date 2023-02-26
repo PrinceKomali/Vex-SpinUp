@@ -37,6 +37,8 @@ void initialize() {
     motor_config(RightBack, COAST, GREEN, false);
     motor_config(BottomIntake, COAST, BLUE, false);
     motor_config(TopIntake, COAST, BLUE, false);
+    motor_config(Fly1, COAST, BLUE, false);
+    motor_config(Fly2, COAST, BLUE, false);
     lcd_initialize();
     lcd_register_btn0_cb(on_center_button);
     imu_reset(GYRO);
