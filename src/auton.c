@@ -194,7 +194,7 @@ void auton_long() {
     conv_start;
     delay(300);
     stop;
-    delay(275);
+    delay(225);
     conv_stop;
 
     // to 2nd roller
@@ -241,7 +241,7 @@ void auton_long() {
     delay(3000);
     stop;
     delay(500);
-    point_in_dir(305, 0.2, 2300);
+    point_in_dir(310, 0.2, 2300);
     conv_stop;
     delay(200);
     forwards(100,100);
@@ -257,13 +257,13 @@ void auton_long() {
     forwards(-100, -100);
     delay(950);
     fly_start_3;
-    delay(1500);
+    delay(1200);
     stop;
-    point_in_dir(80, 0.2, 2300);
+    point_in_dir(100, 0.2, 2300);
     forwards(-100, -100);
-    delay(950);
+    delay(1150);
     stop;
-    delay(125);
+    delay(50);
     conv_stop;
     fly_stop;
     
@@ -273,21 +273,21 @@ void auton_long() {
     strafe(100);
     delay(500);
     forwards(100, 100);
-    delay(500);
+    delay(200);
     conv_start;
     point_in_dir(270, 0.2, 2400);
     delay(200);
 
     // turn 4th roller
     forwards(-100, -100);
-    delay(650);
+    delay(750);
     stop;
     delay(200);
     conv_stop;
 
     // endgame
     forwards(100, 100);
-    delay(500);
+    delay(200);
     strafe(-100);
     delay(500);
     point_in_dir(45, 0.2, 2400);
