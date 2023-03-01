@@ -287,13 +287,13 @@ void auton_long() {
 
     // endgame
     forwards(100, 100);
-    delay(200);
+    delay(500);
     strafe(-100);
     delay(500);
     point_in_dir(45, 0.2, 2400);
     delay(200);
     forwards(-100,-100);
-    delay(500);
+    delay(200);
     stop;
     adi_digital_write(Launcher, 5);
 
