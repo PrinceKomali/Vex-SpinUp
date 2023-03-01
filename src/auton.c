@@ -282,7 +282,7 @@ void auton_long() {
     forwards(-100, -100);
     delay(750);
     stop;
-    delay(200);
+    delay(150);
     conv_stop;
 
     // endgame
@@ -292,7 +292,7 @@ void auton_long() {
     delay(500);
     point_in_dir(45, 0.2, 2400);
     delay(200);
-    forwards(-100,-100);
+    forwards(100,100);
     delay(200);
     stop;
     adi_digital_write(Launcher, 5);
