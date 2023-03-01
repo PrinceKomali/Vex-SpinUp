@@ -10,8 +10,8 @@
 #include <math.h>
 
 
-#define AUTON_FLY_SPEED 10000   // 9950 before
-#define AUTON_FLY_SPEED_2 10100 // 9500 before
+#define AUTON_FLY_SPEED 9800   // 9950 before
+#define AUTON_FLY_SPEED_2 10000 // 9500 before
 #define AUTON_FLY_SPEED_3 9000
 
 #define INTAKE_SPEED 600
@@ -169,9 +169,9 @@ void auton_short_right() {
     delay(1300);
     conv_reverse;
     forwards(-100, -100);
-    delay(300);
+    delay(400);
     // conv_reverse;
-    delay(250); // 200
+    // delay(250); // 200
     conv_stop;
     stop;
 }
