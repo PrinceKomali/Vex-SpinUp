@@ -10,7 +10,7 @@
 #include <math.h>
 
 
-#define AUTON_FLY_SPEED 9800   // 9950 before
+#define AUTON_FLY_SPEED 9900   // 9950 before
 #define AUTON_FLY_SPEED_2 10000 // 9500 before
 #define AUTON_FLY_SPEED_3 9000
 
@@ -101,7 +101,7 @@ void point_in_dir(double tn, double freq /* why did i call it this */,
     // delay(300);
 }
 int current_volt_a = 12000;
-int FLY_TARGET_A = 12300;
+int FLY_TARGET_A = 12500;
 int cutoff_timer = 0;
 int cutoff_bool = 0;
 void bangbang(int d) {
@@ -142,7 +142,7 @@ void auton_shoot(int d) {
 void auton_short() {
     piston_up;
     fly_start;
-    point_in_dir(360 - 4.6, 0.7, 2450);
+    point_in_dir(360 - 4.6, 0.7, 2700);
     forwards(0, 0);
     delay(2500);
     auton_shoot(1000);
@@ -191,8 +191,12 @@ void auton_long() {
 
     // turn 1st roller
     forwards(-100, -100);
+    delay(200);
+    strafe(100);
+    delay(200);
+    forwards(-100,-100);
     conv_start;
-    delay(300);
+    delay(100);
     stop;
     delay(225);
     conv_stop;
@@ -228,7 +232,7 @@ void auton_long() {
     delay(1700);
     forwards(1,1);
     delay(300);
-    point_in_dir(80, 0.2, 2300); // ???
+    point_in_dir(90, 0.2, 2300); // ???
     delay(200);
     forwards(100,100);
     delay(720);
@@ -261,6 +265,7 @@ void auton_long() {
     stop;
     point_in_dir(100, 0.2, 2300);
     forwards(-100, -100);
+    conv_start;
     delay(1150);
     stop;
     delay(50);

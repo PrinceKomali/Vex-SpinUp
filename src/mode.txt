@@ -1,1 +1,1 @@
-void autonomous() {auton_short();};
+void autonomous() {auton_short_right();};
