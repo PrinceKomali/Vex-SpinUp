@@ -49,72 +49,16 @@ int get_stage() {
 
 int vision_check = 0;
 
-#define BANGBANG
 
-#ifdef PD_TEST
-#define KP 0.1
-#define KD 0.1
-int current_volt = 0;
-int last_error = 0;
-int error_before_last = 0;
-void set_fly_speed() { // todo: put in loop and run in thread\
 
-    while (1) {
-        if (!B) {
-            motor_move_voltage(Fly1, -0);
-            motor_move_voltage(Fly2, 0);
-            return;
-        }
-        int current = rotation_get_velocity(ROTATION);
-        int error = FLY_TARGET - current;
-        current_volt = current_volt + (KP * (last_error - error)) +
-                       (KD * ((error - (2 * last_error) + error_before_last)) /
-                        10); // delay will be 10
-        motor_move_voltage(Fly1, -current_volt);
-        motor_move_voltage(Fly2, current_volt);
-
-        error_before_last = last_error;
-        last_error = error;
-        delay(10);
-    }
-}
-#endif
-
-#ifdef P_TEST
-#define KMOD 50
-int current_volt = 8000;
-void set_fly_speed() {
-    while (1) {
-        if (!B) {
-            motor_move_voltage(Fly1, -0);
-            motor_move_voltage(Fly2, 0);
-            current_volt = 12000;
-            // return;
-            continue;
-        }
-
-        int r = rotation_get_velocity(ROTATION);
-        int error = FLY_TARGET - 10;
-        if (r > FLY_TARGET) current_volt -= KMOD;
-        else
-            current_volt += KMOD;
-        motor_move_voltage(Fly1, -current_volt);
-        motor_move_voltage(Fly2, current_volt);
-        delay(10);
-    }
-}
-#endif
-#ifdef BANGBANG
-// #define KMOD 50
 int current_volt = 0;
 void set_fly_speed() {
+    // I HATE BANGBANG
     while (1) {
         if (competition_is_autonomous() || competition_is_disabled()) return;
         if (!B) {
             motor_move_voltage(Fly1, -0);
-            motor_move_voltage(Fly2, 0);
             current_volt = 12000;
-            // return;
             continue;
         }
 
@@ -124,11 +68,10 @@ void set_fly_speed() {
         else
             current_volt = 12000;
         motor_move_voltage(Fly1, -current_volt);
-        motor_move_voltage(Fly2, current_volt);
         delay(20);
     }
 }
-#endif
+
 void controller_print_msg() {
     while(1) {
         int cdps = rotation_get_velocity(ROTATION);
@@ -145,6 +88,23 @@ void controller_print_msg() {
 }
 
 void opcontrol() {
+    //  while(1) {
+    //     optical_rgb_s_t rgb = optical_get_rgb(COLOR);
+    //     double red = rgb.red;
+    //     double blue = rgb.blue;
+    //     if(red + blue < 10) continue;
+    //     if(blue - 5 > red) break;
+    //     motor_move_velocity(Intake, 200);
+    //     // ((int)red << 16) + ((int)rgb.green << 8) + ((int)blue)
+    //     // screen_set_pen(red > blue ? 0xff0000 : 0x0000ff);
+    //     // screen_fill_rect(0,0,100,100);
+    //     // char buf[100]; 
+    //     // snprintf(buf, 100, "%.3f %.3f", red,blue);
+    //     // controller_set_text(E_CONTROLLER_MASTER, 0, 1, buf);
+        
+    // }
+    // motor_brake(Intake);
+    // return;
     controller_clear(E_CONTROLLER_MASTER);
     task_create(set_fly_speed, NULL, TASK_PRIORITY_DEFAULT,
                 TASK_STACK_DEPTH_DEFAULT, "My Task");
@@ -201,10 +161,6 @@ void opcontrol() {
         }
         if (!D_LEFT) pressed_left = 0;
         if (X) FLY_TARGET = get_stage();
-        // set_fly_speed();
-
-        // motor_move_voltage(Fly1, B * -(FLY_TARGET)); // R
-        // motor_move_voltage(Fly2, B * (FLY_TARGET)); // REMOVE ME!
 
         if (L) {
             imu_reset(GYRO);
@@ -212,16 +168,13 @@ void opcontrol() {
 
         // Intake
         if (a_toggle) {
-            motor_move_velocity(TopIntake, -INTAKE_SPEED);
-            motor_move_velocity(BottomIntake, INTAKE_SPEED);
+            motor_move_velocity(Intake, INTAKE_SPEED);
         } else {
-            motor_brake(TopIntake);
-            motor_brake(BottomIntake);
+            motor_brake(Intake);
         }
         if (ZL && !X) {
             a_toggle = 0;
-            motor_move_voltage(TopIntake, 9000);
-            motor_move_voltage(BottomIntake, -9000);
+            motor_move_voltage(Intake, 9000);
         }
 
         // Endgame
@@ -230,9 +183,12 @@ void opcontrol() {
         adi_digital_write(Pneumatic, y_toggle * 5);
 
         // Driving
-        motor_move_velocity(RightFront, (X2 + (X1 - Y1)));
-        motor_move_velocity(LeftFront, (-X2 - (X1 + Y1)));
-        motor_move_velocity(RightBack, ((-X2 + (X1 + Y1))) * -1);
-        motor_move_velocity(LeftBack, ((X2 - (X1 - Y1))) * -1);
+        motor_move_velocity(L1, Y1 + X2);
+        motor_move_velocity(L2, Y1 + X2);
+        motor_move_velocity(L3, Y1 + X2);
+
+        motor_move_velocity(R1, Y1 - X2);
+        motor_move_velocity(R2, Y1 - X2);
+        motor_move_velocity(R3, Y1 - X2);
     }
 }

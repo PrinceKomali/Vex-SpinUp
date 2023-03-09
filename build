@@ -1,36 +1,20 @@
 #!/bin/bash
 echo -e "\x1b[32mClearing old programs...\x1b[0m"
 ./rmall
+cp project.pros temp2
 
-echo -e "\x1b[32mBuilding Non-Skills\x1b[0m"
-echo "void autonomous() {auton_short();};" > src/mode.txt
-pros make || exit 1
-echo -e "\x1b[32mUploading Non-Skills to slot 1...\x1b[0m"
-cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NotSkills"/' > temp
-mv temp project.pros
-sudo pros upload --slot 1
+upload_file() {
+    echo -e "\x1b[32mBuilding \x1b[1m$2\x1b[0m"
+    echo "void autonomous() {$1();};" > src/mode.txt
+    pros make || exit 1
+    echo -e "\x1b[32mUploading \x1b[1m$2\x1b[0;32m to slot 1...\x1b[0m"
+    cat project.pros | sed "s/\"project_name\": \"[^\"]*\"/\"project_name\": \"$3\"/" > temp
+    mv temp project.pros
+    sudo pros upload --slot $4
+}
+upload_file "auton_short" "Driver Left" "Left" 1
+upload_file "auton_short_right" "Driver Right" "Right" 2
+upload_file "auton_long" "Skills" "Skills" 3
 
-echo -e "\x1b[32mBuilding Skills\x1b[0m"
-echo "void autonomous() {auton_long();};" > src/mode.txt
-pros make || exit 1
-echo -e "\x1b[32mUploading Non-Skills to slot 2...\x1b[0m"
-cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "Skills"/' > temp
-mv temp project.pros
-sudo pros upload --slot 2
-
-# echo -e "\x1b[32mBuilding No-Auton\x1b[0m"
-# echo "void autonomous() {return;};" > src/mode.txt
-# pros make || exit 1
-# echo -e "\x1b[32mUploading No-Auton to slot 3...\x1b[0m"
-# cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "NoAuton"/' > temp
-# mv temp project.pros
-# sudo pros upload --slot 3
-
-echo -e "\x1b[32mBuilding Right-Auton\x1b[0m"
-echo "void autonomous() {auton_short_right();};" > src/mode.txt
-pros make || exit 1
-echo -e "\x1b[32mUploading Right-Auton to slot 3...\x1b[0m"
-cat project.pros | sed 's/"project_name": "[^"]*"/"project_name": "RightAuton"/' > temp
-mv temp project.pros
-sudo pros upload --slot 3
-
+mv temp2 project.pros
+rm temp

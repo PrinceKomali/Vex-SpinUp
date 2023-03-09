@@ -31,18 +31,19 @@ void on_center_button() {
 void initialize() {
     adi_pin_mode(Pneumatic, OUTPUT);
     adi_pin_mode(Launcher, OUTPUT);
-    motor_config(LeftFront, COAST, GREEN, true);
-    motor_config(RightFront, COAST, GREEN, false);
-    motor_config(LeftBack, COAST, GREEN, true);
-    motor_config(RightBack, COAST, GREEN, false);
-    motor_config(BottomIntake, COAST, BLUE, false);
-    motor_config(TopIntake, COAST, BLUE, false);
+    motor_config(L1, COAST, GREEN, true);
+    motor_config(R1, COAST, GREEN, false);
+    motor_config(L3, COAST, GREEN, true);
+    motor_config(R3, COAST, GREEN, false);
+    motor_config(Intake, COAST, BLUE, false);
+    // motor_config(TopIntake, COAST, BLUE, false);
     motor_config(Fly1, COAST, BLUE, false);
-    motor_config(Fly2, COAST, BLUE, false);
+    // motor_config(Fly2, COAST, BLUE, false);
     lcd_initialize();
     lcd_register_btn0_cb(on_center_button);
-    imu_reset(GYRO);
-    while(imu_get_heading(GYRO) > 360) {}
+    optical_set_led_pwm(COLOR, 100);
+    // imu_reset(GYRO);
+    // while(imu_get_heading(GYRO) > 360) {}
     controller_set_text(E_CONTROLLER_MASTER, 0, 1, "IMU CALIBRATED`");
 }
 

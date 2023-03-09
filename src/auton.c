@@ -18,55 +18,55 @@
 #define MARGIN_ERROR 0.7
 
 #define forwards(b, a)                                                         \
-    motor_move_velocity(RightFront, -a);                                       \
-    motor_move_velocity(RightBack, -a);                                        \
-    motor_move_velocity(LeftFront, -b);                                        \
-    motor_move_velocity(LeftBack, -b);
+    motor_move_velocity(R1, -a);                                       \
+    motor_move_velocity(R3, -a);                                        \
+    motor_move_velocity(L1, -b);                                        \
+    motor_move_velocity(L3, -b);
 #define stop                                                                   \
-    motor_brake(RightFront);                                                   \
-    motor_brake(RightBack);                                                    \
-    motor_brake(LeftFront);                                                    \
-    motor_brake(LeftBack);
+    motor_brake(R1);                                                   \
+    motor_brake(R3);                                                    \
+    motor_brake(L1);                                                    \
+    motor_brake(L3);
 
 #define fly_start                                                              \
     motor_move_voltage(Fly1, -(AUTON_FLY_SPEED));                              \
-    motor_move_voltage(Fly2, (AUTON_FLY_SPEED));
+//     motor_move_voltage(Fly2, (AUTON_FLY_SPEED));
 
 #define fly_start_2                                                            \
     motor_move_voltage(Fly1, -(AUTON_FLY_SPEED_2));                            \
-    motor_move_voltage(Fly2, (AUTON_FLY_SPEED_2));
+//     motor_move_voltage(Fly2, (AUTON_FLY_SPEED_2));
 // why
 #define fly_start_3                                                            \
     motor_move_voltage(Fly1, -(AUTON_FLY_SPEED_3));                            \
-    motor_move_voltage(Fly2, (AUTON_FLY_SPEED_3));
+//     motor_move_voltage(Fly2, (AUTON_FLY_SPEED_3));
 
 #define fly_stop                                                               \
     motor_move_voltage(Fly1, 0);                                               \
-    motor_move_voltage(Fly2, 0);
+//     motor_move_voltage(Fly2, 0);
 
 #define conv_start                                                             \
-    motor_move_velocity(TopIntake, -INTAKE_SPEED);                             \
-    motor_move_velocity(BottomIntake, INTAKE_SPEED);
+    motor_move_velocity(Intake, -INTAKE_SPEED);                             \
+    // motor_move_velocity(BottomIntake, INTAKE_SPEED);
 #define conv_start_2                                                           \
-    motor_move_velocity(TopIntake, -(INTAKE_SPEED - 100));                     \
-    motor_move_velocity(BottomIntake, (INTAKE_SPEED - 100));
+    motor_move_velocity(Intake, -(INTAKE_SPEED - 100));                     \
+    // motor_move_velocity(BottomIntake, (INTAKE_SPEED - 100));
 
 #define conv_reverse                                                           \
-    motor_move_velocity(TopIntake, INTAKE_SPEED);                              \
-    motor_move_velocity(BottomIntake, -INTAKE_SPEED);
+    motor_move_velocity(Intake, INTAKE_SPEED);                              \
+    // motor_move_velocity(BottomIntake, -INTAKE_SPEED);
 
 #define conv_stop                                                              \
-    motor_move_velocity(TopIntake, 0);                                         \
-    motor_move_velocity(BottomIntake, 0);
+    motor_move_velocity(Intake, 0);                                         \
+    // motor_move_velocity(BottomIntake, 0);
 
 #define piston_up adi_digital_write(Pneumatic, 0);
 #define piston_down adi_digital_write(Pneumatic, 5);
 
 #define strafe(v)                                                              \
-    motor_move_velocity(RightFront, v);                                        \
-    motor_move_velocity(RightBack, -v);                                        \
-    motor_move_velocity(LeftFront, -v);                                        \
-    motor_move_velocity(LeftBack, v);
+    motor_move_velocity(R1, v);                                        \
+    motor_move_velocity(R3, -v);                                        \
+    motor_move_velocity(L1, -v);                                        \
+    motor_move_velocity(L3, v);
 
 #define TARGET -4.9
 #define TARGET_2 5
@@ -92,10 +92,10 @@ void point_in_dir(double tn, double freq /* why did i call it this */,
         double s = fmax(d * 300, mins) * (rot > 180 ? 1 : -1);
         if (d < freq)
             break;
-        motor_move_voltage(RightFront, s);
-        motor_move_voltage(LeftFront, -s);
-        motor_move_voltage(RightBack, s);
-        motor_move_voltage(LeftBack, -s);
+        motor_move_voltage(R1, s);
+        motor_move_voltage(L1, -s);
+        motor_move_voltage(R3, s);
+        motor_move_voltage(L3, -s);
     }
     forwards(0, 0);
     // delay(300);
@@ -119,7 +119,7 @@ void bangbang(int d) {
             conv_start;
         }
         motor_move_voltage(Fly1, -current_volt_a);
-        motor_move_voltage(Fly2, current_volt_a);
+//         motor_move_voltage(Fly2, current_volt_a);
         delay(20);
         if (cutoff_bool)
             cutoff_timer += 20;
@@ -305,8 +305,17 @@ void auton_long() {
     return;
 }
 
-#include "mode.txt"
-
+// #include "mode.txt"
+void __opcontrol() {
+    while(1) {
+        optical_rgb_s_t rgb = optical_get_rgb(COLOR);
+        double red = rgb.red;
+        double blue = rgb.blue;
+        if(red + blue < 150) continue;
+        motor_move_velocity(Intake, red < blue ? 200 : -200);
+        printf(">>> \r%f",red);
+    }
+}
 void _autonomous() {
     while (1) {
         vision_signature_s_t red_sig = vision_signature_from_utility(

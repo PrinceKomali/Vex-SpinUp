@@ -1,20 +1,19 @@
 #ifndef _PORTS_
 #define _PORTS_ 
 
-#define TopIntake 2
-#define BottomIntake 11
+#define Intake 2
 
-#define RightFront 3
-#define LeftBack 4
-#define RightBack 5
-#define LeftFront 6
+#define R1 3
+#define R2 0
+#define R3 5
+
+#define L1 6
+#define L2 0
+#define L3 4
 
 
 
 #define Fly1 7
-#define Fly2 8
-
-#define LeftBack 4
 
 #define Pneumatic 'H'
 #define Launcher 'G'
@@ -23,5 +22,7 @@
 
 #define GYRO 18
 #define ROTATION 20
+
+#define COLOR 19 
 
 #endif
