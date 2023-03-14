@@ -32,9 +32,11 @@ void initialize() {
     adi_pin_mode(Pneumatic, OUTPUT);
     adi_pin_mode(Launcher, OUTPUT);
     motor_config(L1, COAST, GREEN, true);
-    motor_config(R1, COAST, GREEN, false);
+    motor_config(L2, COAST, GREEN, true);
     motor_config(L3, COAST, GREEN, true);
-    motor_config(R3, COAST, GREEN, false);
+    motor_config(R1, COAST, GREEN, true);
+    motor_config(R2, COAST, GREEN, true);
+    motor_config(R3, COAST, GREEN, true);
     motor_config(Intake, COAST, BLUE, false);
     // motor_config(TopIntake, COAST, BLUE, false);
     motor_config(Fly1, COAST, BLUE, false);

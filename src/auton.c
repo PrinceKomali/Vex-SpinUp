@@ -89,13 +89,13 @@ void point_in_dir(double tn, double freq /* why did i call it this */,
     while (1) {
         double rot = imu_get_heading(GYRO);
         double d = fabs(rot > 180 ? rot - 360 : rot);
-        double s = fmax(d * 300, mins) * (rot > 180 ? 1 : -1);
+        double s = fmax(d * 50, mins) * (rot > 180 ? 1 : -1);
         if (d < freq)
             break;
         motor_move_voltage(R1, s);
-        motor_move_voltage(L1, -s);
+        motor_move_voltage(L1, s);
         motor_move_voltage(R3, s);
-        motor_move_voltage(L3, -s);
+        motor_move_voltage(L3, s);
     }
     forwards(0, 0);
     // delay(300);
@@ -327,5 +327,63 @@ void _autonomous() {
 
         controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
         delay(100);
+    }
+}
+
+void _opcontrol() {
+    // point_in_dir()
+    while(1) {
+        char buf[100];
+        snprintf(buf, 100, "%.3f        ",  (double)rotation_get_position(TRACKING_WHEEL) / 100);
+
+        controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
+
+        if(B) rotation_reset_position(TRACKING_WHEEL);
+        if(X) {
+            rotation_reset_position(TRACKING_WHEEL);
+            int error = 180;
+            int s = 100;
+            int minspeed = 2000;
+            while(error > 10) {
+                if(fabs(rotation_get_velocity(TRACKING_WHEEL)) < 1 && minspeed < 2600) minspeed += 25;
+                int n = rotation_get_position(TRACKING_WHEEL);
+                s = fmax(abs(70000 - n)/100,2500); //abs(70000 - n)/1000, 
+                // error = s;
+                if(n > 70000) {
+                    if(s > 0) minspeed -= 50;
+                    s = -1 * abs(s);
+                }
+                else {
+                    if(s < 0) minspeed -= 50;
+                    s = abs(s);
+                }
+                // s *= -1;
+                motor_move_voltage(L1, -s);
+                motor_move_voltage(L2, s);
+                motor_move_voltage(L3, -s);
+                motor_move_voltage(R1, -s);
+                motor_move_voltage(R2, s);
+                motor_move_voltage(R3, -s);
+                // delay(10);
+            }
+            // point_in_dir(180, 0.1, 1500);
+            s=0;
+            motor_move_velocity(L1, -s);
+            motor_move_velocity(L2, s);
+            motor_move_velocity(L3, -s);
+            motor_move_velocity(R1, -s);
+            motor_move_velocity(R2, s);
+            motor_move_velocity(R3, -s);
+        }
+        // 180 == 70000
+        // int y1 = Y1 * 2;
+        // int x2 = sign(X2) * exp((double)abs(X2) * 0.046) * 2; 
+        // motor_move_velocity(L1, (y1 + x2));
+        // motor_move_velocity(L2, -(y1 + x2));
+        // motor_move_velocity(L3, (y1 + x2));
+
+        // motor_move_velocity(R1, -(y1 - x2));
+        // motor_move_velocity(R2, (y1 - x2));
+        // motor_move_velocity(R3, -(y1 - x2));
     }
 }

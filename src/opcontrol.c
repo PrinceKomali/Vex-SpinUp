@@ -183,12 +183,14 @@ void opcontrol() {
         adi_digital_write(Pneumatic, y_toggle * 5);
 
         // Driving
-        motor_move_velocity(L1, Y1 + X2);
-        motor_move_velocity(L2, Y1 + X2);
-        motor_move_velocity(L3, Y1 + X2);
+        int y1 = Y1 * 2;
+        int x2 = sign(X2) * exp((double)abs(X2) * 0.040) * 2; 
+        motor_move_velocity(L1, (y1 + x2));
+        motor_move_velocity(L2, -(y1 + x2));
+        motor_move_velocity(L3, (y1 + x2));
 
-        motor_move_velocity(R1, Y1 - X2);
-        motor_move_velocity(R2, Y1 - X2);
-        motor_move_velocity(R3, Y1 - X2);
+        motor_move_velocity(R1, -(y1 - x2));
+        motor_move_velocity(R2, (y1 - x2));
+        motor_move_velocity(R3, -(y1 - x2));
     }
 }
