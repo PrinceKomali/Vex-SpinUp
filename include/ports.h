@@ -1,7 +1,7 @@
 #ifndef _PORTS_
 #define _PORTS_ 
 
-#define Intake 2
+#define Intake 5
 
 #define R1 9
 #define R2 8
@@ -13,17 +13,17 @@
 
 
 
-#define Fly1 7
+#define Fly1 16
 
-#define Pneumatic 'H'
+#define Pneumatic 'A'
 #define Launcher 'G'
 
 #define __RECIEVER 9
 
 #define GYRO 6
-#define ROTATION 20
+#define ROTATION 15
 
-#define TRACKING_WHEEL 11
+#define TRACKING_WHEEL 4
 
 #define COLOR 19 
 

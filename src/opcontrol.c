@@ -185,12 +185,12 @@ void opcontrol() {
         // Driving
         int y1 = Y1 * 2;
         int x2 = sign(X2) * exp((double)abs(X2) * 0.040) * 2; 
-        motor_move_velocity(L1, (y1 + x2));
-        motor_move_velocity(L2, -(y1 + x2));
-        motor_move_velocity(L3, (y1 + x2));
+        motor_move_velocity(L1, -(y1 - x2));
+        motor_move_velocity(L2, (y1 - x2));
+        motor_move_velocity(L3, -(y1 - x2));
 
-        motor_move_velocity(R1, -(y1 - x2));
-        motor_move_velocity(R2, (y1 - x2));
-        motor_move_velocity(R3, -(y1 - x2));
+        motor_move_velocity(R1, (y1 + x2));
+        motor_move_velocity(R2, -(y1 + x2));
+        motor_move_velocity(R3, (y1 + x2));
     }
 }
