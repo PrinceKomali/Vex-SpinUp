@@ -64,7 +64,7 @@ void set_fly_speed() {
 
         int r = rotation_get_velocity(ROTATION);
         int error = FLY_TARGET - 10;
-        if (r > FLY_TARGET) current_volt = 0;
+        if (fabs(r) > FLY_TARGET) current_volt = 0;
         else
             current_volt = 12000;
         motor_move_voltage(Fly1, current_volt);
