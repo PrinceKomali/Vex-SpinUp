@@ -67,7 +67,7 @@ void set_fly_speed() {
         if (r > FLY_TARGET) current_volt = 0;
         else
             current_volt = 12000;
-        motor_move_voltage(Fly1, -current_volt);
+        motor_move_voltage(Fly1, current_volt);
         delay(20);
     }
 }
