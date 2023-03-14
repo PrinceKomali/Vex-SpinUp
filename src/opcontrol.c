@@ -168,7 +168,7 @@ void opcontrol() {
 
         // Intake
         if (a_toggle) {
-            motor_move_velocity(Intake, INTAKE_SPEED);
+            motor_move_velocity(Intake, -INTAKE_SPEED);
         } else {
             motor_brake(Intake);
         }
