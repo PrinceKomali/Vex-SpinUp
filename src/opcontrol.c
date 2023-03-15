@@ -19,11 +19,11 @@
 #define STAGE_2 12800
 #define STAGE_1 12300
 
-#define INTAKE_SPEED STAGE_1
+#define INTAKE_SPEED STAGE_4
 
 #define TARGET -5
 
-int FLY_TARGET = STAGE_1;
+int FLY_TARGET = STAGE_4;
 int STAGE_NUM = 0;
 
 int a_toggle = 0;
@@ -53,10 +53,10 @@ int vision_check = 0;
 
 int current_volt = 0;
 void set_fly_speed() {
-    // I HATE BANGBANG
+    // NO MORE BANGBANG :D
     while (1) {
         if (competition_is_autonomous() || competition_is_disabled()) return;
-        if (!B) {
+        if (!(B || R)) {
             motor_move_voltage(Fly1, -0);
             current_volt = 12000;
             continue;
@@ -64,11 +64,11 @@ void set_fly_speed() {
 
         int r = rotation_get_velocity(ROTATION);
         int error = FLY_TARGET - 10;
-        if (fabs(r) > FLY_TARGET) current_volt = 0;
+        if (fabs(r) > FLY_TARGET) current_volt /= 2;
         else
             current_volt = 12000;
         motor_move_voltage(Fly1, current_volt);
-        delay(20);
+        delay(25);
     }
 }
 
@@ -167,14 +167,14 @@ void opcontrol() {
         }
 
         // Intake
-        if (a_toggle) {
+        if (a_toggle || ZR) {
             motor_move_velocity(Intake, -INTAKE_SPEED);
         } else {
             motor_brake(Intake);
         }
         if (ZL && !X) {
             a_toggle = 0;
-            motor_move_voltage(Intake, 9000);
+            motor_move_voltage(Intake, INTAKE_SPEED);
         }
 
         // Endgame

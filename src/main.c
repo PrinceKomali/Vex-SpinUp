@@ -4,6 +4,8 @@
 #include "opcontrol.h"
 #include "ports.h"
 #include "pros/imu.h"
+#include "tracking.h"
+#include "motor_config.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -31,12 +33,7 @@ void on_center_button() {
 void initialize() {
     adi_pin_mode(Pneumatic, OUTPUT);
     adi_pin_mode(Launcher, OUTPUT);
-    motor_config(L1, COAST, GREEN, true);
-    motor_config(L2, COAST, GREEN, true);
-    motor_config(L3, COAST, GREEN, true);
-    motor_config(R1, COAST, GREEN, true);
-    motor_config(R2, COAST, GREEN, true);
-    motor_config(R3, COAST, GREEN, true);
+    drive_set_coast();
     motor_config(Intake, COAST, BLUE, false);
     // motor_config(TopIntake, COAST, BLUE, false);
     motor_config(Fly1, COAST, BLUE, false);
@@ -44,9 +41,11 @@ void initialize() {
     lcd_initialize();
     lcd_register_btn0_cb(on_center_button);
     optical_set_led_pwm(COLOR, 100);
+    rotation_reset_position(TRACKING_WHEEL);
+    
     // imu_reset(GYRO);
     // while(imu_get_heading(GYRO) > 360) {}
-    controller_set_text(E_CONTROLLER_MASTER, 0, 1, "IMU CALIBRATED`");
+    // controller_set_text(E_CONTROLLER_MASTER, 0, 1, "IMU CALIBRATED`");
 }
 
 /**

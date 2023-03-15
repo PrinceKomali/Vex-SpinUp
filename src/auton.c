@@ -19,8 +19,10 @@
 
 #define forwards(b, a)                                                         \
     motor_move_velocity(R1, -a);                                       \
+    motor_move_velocity(R2, a);                                       \
     motor_move_velocity(R3, -a);                                        \
     motor_move_velocity(L1, -b);                                        \
+    motor_move_velocity(L2, b);                                        \
     motor_move_velocity(L3, -b);
 #define stop                                                                   \
     motor_brake(R1);                                                   \
