@@ -1,1 +1,0 @@
-./upload && echo | sudo pros v5 run

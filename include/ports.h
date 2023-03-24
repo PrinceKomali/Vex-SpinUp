@@ -20,11 +20,12 @@
 
 #define __RECIEVER 9
 
-#define GYRO 0
+#define GYRO 7
 #define ROTATION 15
 
 #define TRACKING_WHEEL 6
 
-#define COLOR 19 
+#define COLOR_L 17 
+#define COLOR_R 14
 
 #endif

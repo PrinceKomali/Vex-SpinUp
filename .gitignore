@@ -6,17 +6,20 @@
 *.bin
 *.elf
 
-# Oops
-*.png
-
 # PROS
 bin/
 .vscode/
+.cache/
 compile_commands.json
 temp.log
 temp.errors
 *.ini
 .d/
-.cache/
-a.out
-test.c
+
+version
+LICENSE.md
+*.zip
+.gitattributes
+.clang-format
+.github
+_config.yml
