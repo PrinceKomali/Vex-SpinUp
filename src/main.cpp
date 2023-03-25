@@ -8,6 +8,9 @@
 
 
 void initialize() {  
+    pros::c::adi_pin_mode(Pneumatic, OUTPUT);
+    pros::c::adi_pin_mode(Launcher, OUTPUT);
+    pros::c::adi_pin_mode(AngleRaiser, OUTPUT);
   pros::delay(500); // Stop the user from doing anything while legacy ports configure.
 
 //   ez::as::auton_selector.add_autons({
@@ -21,6 +24,7 @@ void initialize() {
 // //   });
 
 //   ez::as::initialize();
+
 
     
 }

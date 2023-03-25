@@ -1,0 +1,4 @@
+#!/bin/zsh
+{ echo "import datetime"; echo "f=[]"; sudo pros v5 ls-file | grep --color=none "^{" | awk '{ print "f.append("$0")" }'; echo "for i in f: print(i['filename'])" } | pypy3 > /tmp/txt.txt
+sleep 0.3
+cat /tmp/txt.txt | xargs -I {} sudo pros v5 rm-file {}

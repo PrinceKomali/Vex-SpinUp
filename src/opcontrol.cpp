@@ -37,6 +37,8 @@ int y_toggle = 0;
 int pressed_y = 0;
 int pressed_r = 0;
 int r_toggle = 0;
+int pressed_l = 0;
+int l_toggle = 0;
 
 int pressed_up = 0;
 int pressed_down = 0;
@@ -93,7 +95,8 @@ void controller_print_msg(void *) {
 }
 
 void opcontrol() {
-        drive_set_coast();
+
+        // drive_set_coast();
     //  while(1) {
     //     optical_rgb_s_t rgb = optical_get_rgb(COLOR);
     //     double red = rgb.red;
@@ -130,6 +133,11 @@ void opcontrol() {
             r_toggle = !r_toggle;
         }
         if (!R) pressed_r = 0;
+        if (L && !pressed_l) {
+            pressed_l = 1;
+            l_toggle = !l_toggle;
+        }
+        if (!L) pressed_l = 0;
         if (Y && !pressed_y) {
             pressed_y = 1;
             y_toggle = !y_toggle;
@@ -187,17 +195,19 @@ void opcontrol() {
         if (ZL && X) exp_n = 1;
         adi_digital_write(Launcher, exp_n * 5);
         adi_digital_write(Pneumatic, y_toggle * 5);
+        adi_digital_write(AngleRaiser, l_toggle * 5);
 
         // Driving
+        ;
         int y1 = Y1 * 2;
         // int x2 = sign(X2) * 6 * exp((double)abs(X2) * 0.0304); 
         int x2 = sign(X2) * 2 * exp((double)abs(X2) * 0.040); 
-        motor_move_velocity(L1, -(y1 - x2));
+        motor_move_velocity(L1, (y1 - x2));
         motor_move_velocity(L2, (y1 - x2));
-        motor_move_velocity(L3, -(y1 - x2));
+        motor_move_velocity(L3, (y1 - x2));
 
         motor_move_velocity(R1, (y1 + x2));
-        motor_move_velocity(R2, -(y1 + x2));
+        motor_move_velocity(R2, (y1 + x2));
         motor_move_velocity(R3, (y1 + x2));
     }
 }

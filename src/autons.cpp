@@ -11,8 +11,10 @@ using namespace pros::c;
 
 #define piston_up() adi_digital_write(Pneumatic, 0);
 #define piston_down() adi_digital_write(Pneumatic, 5);
-#define raiser_up() ;
-#define raiser_down() ;
+#define raiser_up() adi_digital_write(AngleRaiser, 0);;
+#define raiser_down() adi_digital_write(AngleRaiser, 5);
+ #define conv_start() motor_move_velocity(Intake, -600); 
+ #define conv_stop() motor_move_velocity(Intake, 0); 
 void default_constants() {
   chassis.set_slew_min_power(80, 80);
   chassis.set_slew_distance(7, 7);
@@ -31,17 +33,17 @@ void shoot(int d, int s = 12500) {
     while (1) {
         if (cutoff_timer >= d)
             break;
-        int r = rotation_get_velocity(ROTATION);
+        int r = -1 * rotation_get_velocity(ROTATION);
         int error = s - r;
         if (r > s)
             current_volt_a /= 2;
         else
             current_volt_a = 12000;
-        if (error < 3) {
+        if (error < 2) {
             cutoff_bool = 1;
-            motor_move_velocity(Intake, 600);
+            motor_move_velocity(Intake, -75);
         }
-        motor_move_voltage(Fly1, -current_volt_a);
+        motor_move_voltage(Fly1, current_volt_a);
         delay(20);
         if (cutoff_bool)
             cutoff_timer += 20;
@@ -56,12 +58,72 @@ void shoot(int d, int s = 12500) {
 void auton_long() {
     // first shots
     piston_up();
-    raiser_up();
-    chassis.set_turn_pid(25, TURN_SPEED);
-    shoot(2000);
-    chassis.set_turn_pid(0, TURN_SPEED);
     raiser_down();
+    // raiser_up();
+    chassis.set_turn_pid(14, TURN_SPEED);
+    chassis.wait_drive();
+    shoot(2000, 14200);
+    chassis.set_turn_pid(0, TURN_SPEED);
+    chassis.wait_drive();
+    // raiser_down();
     pros::delay(200);
+    chassis.set_drive_pid(-48, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(90, TURN_SPEED);
+    chassis.wait_drive();
+    backup_roller(1);
+
+    chassis.set_drive_pid(28, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(0, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(-24, 100, true);
+    chassis.wait_drive();
+
+    // backup roller
+    chassis.set_drive_pid(28, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(225, TURN_SPEED);
+    chassis.wait_drive();
+
+    piston_down();
+    conv_start();
+    chassis.set_drive_pid(-60, 40, true);
+    chassis.wait_drive();
+    conv_stop();
+
+    chassis.set_drive_pid(84, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(90, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(60, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(105, TURN_SPEED);
+    chassis.wait_drive();
+    piston_up();
+    shoot(2000, 15000);
+    chassis.set_turn_pid(135, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(-24, 110, true);
+    chassis.wait_drive();
+    pros::delay(700);
+    piston_down();
+    conv_start();
+    chassis.set_drive_pid(-24, 20, true);
+    chassis.wait_drive();
+    pros::delay(600);
+    conv_stop();
+    chassis.set_drive_pid(48, 100, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(135, TURN_SPEED);
+    chassis.wait_drive();
+    piston_up();
+    shoot(2000, 15000);
+    
+
+    
+
+    
 
 
 
@@ -70,7 +132,7 @@ void auton_long() {
 
 
 // void autonomous() { auton_long(); }
-// #include "mode.txt"
+#include "mode.txt"
 
 
 void tug (int attempts) {

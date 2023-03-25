@@ -17,6 +17,7 @@
 
 #define Pneumatic 'A'
 #define Launcher 'G'
+#define AngleRaiser 'B'
 
 #define __RECIEVER 9
 

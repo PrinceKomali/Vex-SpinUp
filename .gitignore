@@ -15,11 +15,10 @@ temp.log
 temp.errors
 *.ini
 .d/
-
+f2/
+*.yml
+*.zip
 version
 LICENSE.md
-*.zip
 .gitattributes
 .clang-format
-.github
-_config.yml
