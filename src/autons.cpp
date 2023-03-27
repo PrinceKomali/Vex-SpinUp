@@ -25,7 +25,7 @@ void default_constants() {
   chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
 }
 
-
+#define SENSITIVITY 20
 void shoot(int d, int s = 12500) {
     int current_volt_a = s;
     int cutoff_timer = 0;
@@ -39,14 +39,20 @@ void shoot(int d, int s = 12500) {
             current_volt_a /= 2;
         else
             current_volt_a = 12000;
-        if (error < 2) {
+        if (error < SENSITIVITY) {
             cutoff_bool = 1;
-            motor_move_velocity(Intake, -75);
+            // motor_move_velocity(Intake, -75);
         }
         motor_move_voltage(Fly1, current_volt_a);
         delay(20);
-        if (cutoff_bool)
-            cutoff_timer += 20;
+        if (cutoff_bool) {
+            if(fabs(r) + 2000 < s) {
+                motor_move_velocity(Intake, 0);
+            } else {
+                motor_move_velocity(Intake, -200);
+                cutoff_timer += 20;
+            }
+        }
     }
     cutoff_bool = 0;
     cutoff_timer = 0;
@@ -56,83 +62,39 @@ void shoot(int d, int s = 12500) {
 
 
 void auton_long() {
-    // first shots
-    piston_up();
+    
+}
+void auton_test() {
+    // backup_roller(0);
     raiser_down();
-    // raiser_up();
-    chassis.set_turn_pid(14, TURN_SPEED);
+    piston_up();
+    chassis.set_turn_pid(-4.9, TURN_SPEED);
     chassis.wait_drive();
-    shoot(2000, 14200);
+    shoot(2000, 17200);
     chassis.set_turn_pid(0, TURN_SPEED);
     chassis.wait_drive();
-    // raiser_down();
-    pros::delay(200);
-    chassis.set_drive_pid(-48, 100, true);
-    chassis.wait_drive();
-    chassis.set_turn_pid(90, TURN_SPEED);
-    chassis.wait_drive();
-    backup_roller(1);
-
-    chassis.set_drive_pid(28, 100, true);
-    chassis.wait_drive();
-    chassis.set_turn_pid(0, TURN_SPEED);
-    chassis.wait_drive();
-    chassis.set_drive_pid(-24, 100, true);
-    chassis.wait_drive();
-
-    // backup roller
-    chassis.set_drive_pid(28, 100, true);
+    backup_roller(0);
+    chassis.set_drive_pid(8, 100, true);
     chassis.wait_drive();
     chassis.set_turn_pid(225, TURN_SPEED);
     chassis.wait_drive();
-
-    piston_down();
     conv_start();
-    chassis.set_drive_pid(-60, 40, true);
+    piston_down();
+    chassis.set_drive_pid(-24, 100, true);
+    chassis.wait_drive();
+    // pros::delay(500);
+    chassis.set_drive_pid(-24, 50, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(333, TURN_SPEED);
     chassis.wait_drive();
     conv_stop();
-
-    chassis.set_drive_pid(84, 100, true);
-    chassis.wait_drive();
-    chassis.set_turn_pid(90, TURN_SPEED);
-    chassis.wait_drive();
-    chassis.set_drive_pid(60, 100, true);
-    chassis.wait_drive();
-    chassis.set_turn_pid(105, TURN_SPEED);
-    chassis.wait_drive();
     piston_up();
-    shoot(2000, 15000);
-    chassis.set_turn_pid(135, TURN_SPEED);
-    chassis.wait_drive();
-    chassis.set_drive_pid(-24, 110, true);
-    chassis.wait_drive();
-    pros::delay(700);
-    piston_down();
-    conv_start();
-    chassis.set_drive_pid(-24, 20, true);
-    chassis.wait_drive();
-    pros::delay(600);
-    conv_stop();
-    chassis.set_drive_pid(48, 100, true);
-    chassis.wait_drive();
-    chassis.set_turn_pid(135, TURN_SPEED);
-    chassis.wait_drive();
-    piston_up();
-    shoot(2000, 15000);
-    
-
-    
-
-    
-
-
-
+    shoot(3000, 16500);
 }
 
 
-
-// void autonomous() { auton_long(); }
-#include "mode.txt"
+void autonomous() { auton_test(); }
+// #include "mode.txt"
 
 
 void tug (int attempts) {
