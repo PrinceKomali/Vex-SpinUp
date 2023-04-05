@@ -15,10 +15,6 @@
 #define FLY_MAX 18600
 #define FLY_MIN 2000
 
-#define STAGE_4 16000
-#define STAGE_3 13800
-#define STAGE_2 12800
-#define STAGE_1 12300
 
 #define INTAKE_SPEED 18000
 
@@ -28,7 +24,7 @@
 using namespace pros;
 using namespace pros::c;
 
-int FLY_TARGET = STAGE_4;
+int FLY_TARGET = 12300;
 int STAGE_NUM = 0;
 
 int a_toggle = 0;
@@ -46,13 +42,6 @@ int pressed_right = 0;
 int pressed_left = 0;
 
 int exp_n = 0;
-
-void set_stage() {
-    FLY_TARGET = ((int[]){STAGE_1, STAGE_2, STAGE_3, STAGE_4})[STAGE_NUM];
-}
-int get_stage() {
-    return ((int[]){STAGE_1, STAGE_2, STAGE_3, STAGE_4})[STAGE_NUM];
-}
 
 int vision_check = 0;
 
@@ -83,13 +72,14 @@ void controller_print_msg(void *) {
     while(1) {
         int cdps = rotation_get_velocity(ROTATION);
         // Controller Display
+        FLY_TARGET = l_toggle ? 14000 : 13000; 
         char buf[100];
         snprintf(buf, 100, "FLY SPEED = %d            ", FLY_TARGET / 100);
         controller_set_text(E_CONTROLLER_MASTER, 0, 1, buf);
-        snprintf(buf, 100, "FLY STAGE = %d            ", STAGE_NUM + 1);
-        controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
-        snprintf(buf, 100, "V=%d S=%d            ", current_volt, cdps);
-        controller_set_text(E_CONTROLLER_MASTER, 2, 1, buf);
+        // snprintf(buf, 100, "FLY STAGE = %d            ", STAGE_NUM + 1);
+        // controller_set_text(E_CONTROLLER_MASTER, 1, 1, buf);
+        // snprintf(buf, 100, "V=%d S=%d            ", current_volt, cdps);
+        // controller_set_text(E_CONTROLLER_MASTER, 2, 1, buf);
         delay(80);
     }
 }
@@ -141,48 +131,32 @@ void opcontrol() {
         if (Y && !pressed_y) {
             pressed_y = 1;
             y_toggle = !y_toggle;
+            
         }
         if (!Y) pressed_y = 0;
 
-        // Flywheel Staging - TODO: rework with cdps
+
         if (D_UP && !pressed_up) {
             pressed_up = 1;
             if (FLY_TARGET < FLY_MAX) FLY_TARGET += 500;
         }
         if (!D_UP) pressed_up = 0;
-
         if (D_DOWN && !pressed_down) {
             pressed_down = 1;
             if (FLY_TARGET > FLY_MIN) FLY_TARGET -= 500;
         }
-        if (!D_DOWN) pressed_down = 0;
-
-        if (D_RIGHT && !pressed_right) {
-
-            pressed_right = 1;
-            STAGE_NUM = (STAGE_NUM + 1) % 4;
-            if (FLY_TARGET == STAGE_1 || FLY_TARGET == STAGE_2 ||
-                FLY_TARGET == STAGE_3 || FLY_TARGET == STAGE_4)
-                set_stage();
-        }
-        if (!D_RIGHT) pressed_right = 0;
-        if (D_LEFT && !pressed_left) {
-            pressed_left = 1;
-            STAGE_NUM = STAGE_NUM == 0 ? 3 : STAGE_NUM - 1;
-            if (FLY_TARGET == STAGE_1 || FLY_TARGET == STAGE_2 ||
-                FLY_TARGET == STAGE_3 || FLY_TARGET == STAGE_4)
-                set_stage();
-        }
-        if (!D_LEFT) pressed_left = 0;
-        if (X) FLY_TARGET = get_stage();
-
-        if (L) {
-            imu_reset(GYRO);
-        }
-
         // Intake
-        if (a_toggle || ZR) {
-            motor_move_velocity(Intake, -INTAKE_SPEED);
+        if(ZR) {
+            a_toggle = 0;
+            int r = -1 * rotation_get_velocity(ROTATION);
+            if(fabs(r) + 2000 < FLY_TARGET && fabs(r) > 2000) {
+                motor_move_velocity(Intake, 0);
+            } else {
+                motor_move_velocity(Intake, -200);
+            }
+        }
+        else if (a_toggle) {
+            motor_move_voltage(Intake, -INTAKE_SPEED);
         } else if (ZL && !X) {
             a_toggle = 0;
             motor_move_voltage(Intake, INTAKE_SPEED);
@@ -190,7 +164,7 @@ void opcontrol() {
             motor_brake(Intake);
         }
         
-
+        
         // Endgame
         if (ZL && X) exp_n = 1;
         adi_digital_write(Launcher, exp_n * 5);

@@ -15,8 +15,8 @@
 
 #define Fly1 16
 
-#define Pneumatic 'A'
-#define Launcher 'G'
+#define Pneumatic 'E'
+#define Launcher 'A'
 #define AngleRaiser 'B'
 
 #define __RECIEVER 9
