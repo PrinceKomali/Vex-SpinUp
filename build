@@ -6,15 +6,18 @@ cp project.pros temp2
 upload_file() {
     echo -e "\x1b[32mBuilding \x1b[1m$2\x1b[0m"
     echo "void autonomous() {$1();};" > src/mode.txt
+    echo "#define LOOKING_$5 " > src/color.txt
     pros make || exit 1
     echo -e "\x1b[32mUploading \x1b[1m$2\x1b[0;32m to slot 1...\x1b[0m"
     cat project.pros | sed "s/\"project_name\": \"[^\"]*\"/\"project_name\": \"$3\"/" > temp
     mv temp project.pros
     sudo pros upload --slot $4
 }
-upload_file "auton_short" "Driver Left" "Left" 1
-upload_file "auton_short_right" "Driver Right" "Right" 2
-upload_file "auton_long" "Skills" "Skills" 3
+upload_file "auton_left" "Red Left" "RedLeft" 1 RED
+upload_file "auton_left" "Blue Left" "BlueLeft" 2 BLUE
+upload_file "auton_right" "Red Right" "RedRight" 3 RED
+upload_file "auton_right" "Blue Right" "BlueRight" 4 BLUE
+upload_file "auton_skills" "Skills" "Skills" 5 RED
 
 mv temp2 project.pros
 rm temp
