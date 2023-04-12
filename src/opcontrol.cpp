@@ -72,7 +72,7 @@ void controller_print_msg(void *) {
     while(1) {
         int cdps = rotation_get_velocity(ROTATION);
         // Controller Display
-        FLY_TARGET = l_toggle ? 14000 : 13000; 
+        FLY_TARGET = l_toggle ? 14000 : 14000; 
         char buf[100];
         snprintf(buf, 100, "FLY SPEED = %d            ", FLY_TARGET / 100);
         controller_set_text(E_CONTROLLER_MASTER, 0, 1, buf);

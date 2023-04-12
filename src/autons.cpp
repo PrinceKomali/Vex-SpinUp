@@ -13,9 +13,11 @@ using namespace pros::c;
 #define piston_down() adi_digital_write(Pneumatic, 5);
 #define raiser_up() adi_digital_write(AngleRaiser, 0);;
 #define raiser_down() adi_digital_write(AngleRaiser, 5);
- #define conv_start() motor_move_velocity(Intake, -600); 
- #define conv_stop() motor_move_velocity(Intake, 0); 
+#define conv_start() motor_move_velocity(Intake, -600); 
+#define conv_stop() motor_move_velocity(Intake, 0); 
 #define fly_spin() motor_move_voltage(Fly1, 9000);
+#define fly_stop() motor_move_voltage(Fly1, 0);
+#define EXPAND() adi_digital_write(Launcher, 5);
 void default_constants() {
   chassis.set_slew_min_power(80, 80);
   chassis.set_slew_distance(7, 7);
@@ -66,9 +68,9 @@ void auton_skills() {
     piston_up();
     raiser_down();
     fly_spin();
-    chassis.set_turn_pid(5.9, TURN_SPEED);
+    chassis.set_turn_pid(8, TURN_SPEED);
     chassis.wait_drive();
-    shoot(1500, 14600);
+    shoot(1500, 14200);
     chassis.set_turn_pid(0, TURN_SPEED);
     chassis.wait_drive();
 
@@ -89,11 +91,11 @@ void auton_skills() {
     fly_spin();
     chassis.set_drive_pid(-62, 80, true);
     chassis.wait_drive();
-    chassis.set_turn_pid(315.5, TURN_SPEED);
+    chassis.set_turn_pid(316.5, TURN_SPEED);
     chassis.wait_drive();
     conv_stop();
     piston_up();
-    shoot(2000, 14300);
+    shoot(2000, 14500);
 
     // 3 stack 1
     piston_down();
@@ -108,34 +110,100 @@ void auton_skills() {
     chassis.set_turn_pid(270, TURN_SPEED);
     chassis.wait_drive();
     conv_stop();
-    raiser_up();
-    fly_spin();
-    chassis.set_drive_pid(47, 110, true);
+    // raiser_up();
+    chassis.set_drive_pid(43, 110, true);
     chassis.wait_drive();
-    piston_up();
-    conv_start();
+    // conv_start();
+    fly_spin();
     chassis.set_turn_pid(266, TURN_SPEED);
     chassis.wait_drive();
+    piston_up();
     shoot(2000, 14000);
 
     // roller 2
     raiser_down();
-    // chassis.set_turn_pid(272, TURN_SPEED);
-    // chassis.wait_drive();
-    chassis.set_drive_pid(-49, 110, true);
+    chassis.set_drive_pid(-45, 110, true);
     chassis.wait_drive();
     chassis.set_turn_pid(180, TURN_SPEED);
     chassis.wait_drive();
     backup_roller(0);
 
     // roller 3
-    chassis.set_drive_pid(24, 110, true);
+    chassis.set_drive_pid(8, 75, true);
     chassis.wait_drive();
+    chassis.set_turn_pid(305, TURN_SPEED);
+    chassis.wait_drive();
+    conv_start();
+    fly_spin();
+    piston_down();
+    chassis.set_drive_pid(-28, 110, true);
+    chassis.wait_drive();
+    conv_stop();
     chassis.set_turn_pid(270, TURN_SPEED);
-    chassis.set_drive_pid(-12, 75, true);
     chassis.wait_drive();
+    piston_up();
+    conv_start();
+    pros::delay(1000);
+    fly_stop();
+    backup_roller(1);
 
+    // 3 line 2
+    chassis.set_drive_pid(8, 75, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(35, TURN_SPEED);
+    chassis.wait_drive();
+    conv_start();
+    piston_down();
+    fly_spin();
+    chassis.set_drive_pid(-62, 80, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(139, TURN_SPEED);
+    chassis.wait_drive();
+    conv_stop();
+    piston_up();
+    shoot(2000, 14500);
 
+     // 3 stack 2
+    piston_down();
+    chassis.set_turn_pid(45, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(-37, 110, true);
+    chassis.wait_drive();
+    pros::delay(200);
+    conv_start();
+    chassis.set_drive_pid(-30, 80, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(90, TURN_SPEED);
+    chassis.wait_drive();
+    conv_stop();
+    chassis.set_drive_pid(43, 110, true);
+    chassis.wait_drive();
+    fly_spin();
+    chassis.set_turn_pid(86, TURN_SPEED);
+    chassis.wait_drive();
+    piston_up();
+    shoot(2000, 14000);
+
+    // roller 4
+    raiser_down();
+    chassis.set_drive_pid(-45, 110, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(0, TURN_SPEED);
+    chassis.wait_drive();
+    backup_roller(0);
+
+    // EXPAND
+    chassis.set_drive_pid(8, 110, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(90, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(-24, 110, true);
+    chassis.wait_drive();
+    chassis.set_turn_pid(45, TURN_SPEED);
+    chassis.wait_drive();
+    EXPAND();
+    
+    
 
     
 }
