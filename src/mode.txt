@@ -1,1 +1,1 @@
-void autonomous() {auton_skills();};
+void autonomous() {auton_left();};

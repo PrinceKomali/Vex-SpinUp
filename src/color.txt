@@ -1,1 +1,1 @@
-#define LOOKING_RED 
+#define LOOKING_RED  

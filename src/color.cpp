@@ -28,7 +28,7 @@ void backup_roller(int lr, int reverse) {
         screen_set_pen(((int)red << 16) + ((int)rgb.green << 8) + ((int)blue));
         screen_fill_rect(0,0,100,100);
 #ifdef LOOKING_BLUE
-        if(red + blue < 450) continue;
+        // if(red + blue < 450) continue;
         if(red - 30 > blue) break;
 #endif
 #ifdef LOOKING_RED

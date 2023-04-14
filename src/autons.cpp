@@ -49,10 +49,12 @@ void shoot(int d, int s = 12500) {
         motor_move_voltage(Fly1, current_volt_a);
         delay(20);
         if (cutoff_bool) {
-            if(r + 1000 < s) {
+            if(r + 1500 < s) {
                 motor_move_velocity(Intake, 0);
+                piston_down();
             } else {
                 motor_move_velocity(Intake, -200);
+                piston_up();
                 cutoff_timer += 20;
             }
         }
@@ -209,13 +211,14 @@ void auton_skills() {
 }
 void auton_right() {
     fly_spin();
+    raiser_down();
     chassis.set_turn_pid(35, TURN_SPEED);
     chassis.wait_drive();
     chassis.set_drive_pid(18, 110, true);
     chassis.wait_drive();
     chassis.set_turn_pid(20, TURN_SPEED);
     chassis.wait_drive();
-    shoot(2000, 16000);
+    shoot(1500, 16250);
     chassis.set_turn_pid(-45, TURN_SPEED);
     chassis.wait_drive();
     chassis.set_drive_pid(-16, 110, true);
@@ -234,10 +237,10 @@ void auton_right() {
     chassis.wait_drive();
     pros::delay(200);
     conv_stop();
-    chassis.set_turn_pid(47, TURN_SPEED);
+    chassis.set_turn_pid(46, TURN_SPEED);
     chassis.wait_drive();
     piston_up();
-    shoot(3000, 16000);
+    shoot(3000, 16150);
 }
 void auton_test() {
     backup_roller(0, 1);
@@ -246,7 +249,7 @@ void auton_left() {
     // backup_roller(0);
     raiser_down();
     piston_up();
-    chassis.set_turn_pid(-4.9, TURN_SPEED);
+    chassis.set_turn_pid(-6, TURN_SPEED);
     chassis.wait_drive();
     shoot(2000, 17200);
     chassis.set_turn_pid(0, TURN_SPEED);
@@ -254,7 +257,7 @@ void auton_left() {
     backup_roller(0);
     chassis.set_drive_pid(8, 100, true);
     chassis.wait_drive();
-    chassis.set_turn_pid(-135, TURN_SPEED);
+    chassis.set_turn_pid(360-135, TURN_SPEED);
     chassis.wait_drive();
     piston_down();
     chassis.set_drive_pid(-24, 100, true);
@@ -273,8 +276,8 @@ void auton_left() {
 
 
 // void autonomous() { auton_test(); }
-void autonomous() { auton_skills(); }
-// #include "mode.txt"
+// void autonomous() { auton_skills(); }
+#include "mode.txt"
 
 
 void tug (int attempts) {
