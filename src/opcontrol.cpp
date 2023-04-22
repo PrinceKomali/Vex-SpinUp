@@ -72,7 +72,6 @@ void controller_print_msg(void *) {
     while(1) {
         int cdps = rotation_get_velocity(ROTATION);
         // Controller Display
-        FLY_TARGET = l_toggle ? 14000 : 14000; 
         char buf[100];
         snprintf(buf, 100, "FLY SPEED = %d            ", FLY_TARGET / 100);
         controller_set_text(E_CONTROLLER_MASTER, 0, 1, buf);
@@ -125,6 +124,7 @@ void opcontrol() {
         if (!R) pressed_r = 0;
         if (L && !pressed_l) {
             pressed_l = 1;
+            FLY_TARGET = l_toggle ? 13400 : 14000; 
             l_toggle = !l_toggle;
         }
         if (!L) pressed_l = 0;
@@ -138,12 +138,14 @@ void opcontrol() {
 
         if (D_UP && !pressed_up) {
             pressed_up = 1;
-            if (FLY_TARGET < FLY_MAX) FLY_TARGET += 500;
+            // if (FLY_TARGET < FLY_MAX) 
+            FLY_TARGET += 500;
         }
         if (!D_UP) pressed_up = 0;
         if (D_DOWN && !pressed_down) {
             pressed_down = 1;
-            if (FLY_TARGET > FLY_MIN) FLY_TARGET -= 500;
+            // if (FLY_TARGET > FLY_MIN) 
+            FLY_TARGET -= 500;
         }
         // Intake
         if(ZR) {

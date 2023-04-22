@@ -8,10 +8,10 @@ upload_file() {
     echo "void autonomous() {$1();};" > src/mode.txt
     echo "#define LOOKING_$5 " > src/color.txt
     pros make || exit 1
-    echo -e "\x1b[32mUploading \x1b[1m$2\x1b[0;32m to slot 1...\x1b[0m"
+    echo -e "\x1b[32mUploading \x1b[1m$2\x1b[0;32m to slot $4...\x1b[0m"
     cat project.pros | sed "s/\"project_name\": \"[^\"]*\"/\"project_name\": \"$3\"/" > temp
     mv temp project.pros
-    sudo pros upload --slot $4
+    until echo n | sudo pros upload --slot $4; do echo; done
 }
 upload_file "auton_left" "Red Left" "RedLeft" 1 RED
 upload_file "auton_left" "Blue Left" "BlueLeft" 2 BLUE

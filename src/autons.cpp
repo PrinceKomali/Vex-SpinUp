@@ -70,9 +70,9 @@ void auton_skills() {
     piston_up();
     raiser_down();
     fly_spin();
-    chassis.set_turn_pid(8, TURN_SPEED);
+    chassis.set_turn_pid(10, TURN_SPEED);
     chassis.wait_drive();
-    shoot(1500, 14200);
+    shoot(1500, 14100);
     chassis.set_turn_pid(0, TURN_SPEED);
     chassis.wait_drive();
 
@@ -93,11 +93,11 @@ void auton_skills() {
     fly_spin();
     chassis.set_drive_pid(-62, 80, true);
     chassis.wait_drive();
-    chassis.set_turn_pid(316.5, TURN_SPEED);
+    chassis.set_turn_pid(317.5, TURN_SPEED);
     chassis.wait_drive();
     conv_stop();
     piston_up();
-    shoot(2000, 14500);
+    shoot(2000, 14200);
 
     // 3 stack 1
     piston_down();
@@ -117,10 +117,10 @@ void auton_skills() {
     chassis.wait_drive();
     // conv_start();
     fly_spin();
-    chassis.set_turn_pid(266, TURN_SPEED);
+    chassis.set_turn_pid(268, TURN_SPEED);
     chassis.wait_drive();
     piston_up();
-    shoot(2000, 14000);
+    shoot(2000, 14200);
 
     // roller 2
     raiser_down();
@@ -159,11 +159,11 @@ void auton_skills() {
     fly_spin();
     chassis.set_drive_pid(-62, 80, true);
     chassis.wait_drive();
-    chassis.set_turn_pid(139, TURN_SPEED);
+    chassis.set_turn_pid(142.5, TURN_SPEED);
     chassis.wait_drive();
     conv_stop();
     piston_up();
-    shoot(2000, 14500);
+    shoot(2000, 14200);
 
      // 3 stack 2
     piston_down();
@@ -173,7 +173,7 @@ void auton_skills() {
     chassis.wait_drive();
     pros::delay(200);
     conv_start();
-    chassis.set_drive_pid(-30, 80, true);
+    chassis.set_drive_pid(-30, 75, true);
     chassis.wait_drive();
     chassis.set_turn_pid(90, TURN_SPEED);
     chassis.wait_drive();
@@ -184,11 +184,11 @@ void auton_skills() {
     chassis.set_turn_pid(86, TURN_SPEED);
     chassis.wait_drive();
     piston_up();
-    shoot(2000, 14000);
+    shoot(2000, 14100);
 
     // roller 4
     raiser_down();
-    chassis.set_drive_pid(-45, 110, true);
+    chassis.set_drive_pid(-47, 110, true);
     chassis.wait_drive();
     chassis.set_turn_pid(0, TURN_SPEED);
     chassis.wait_drive();
@@ -202,6 +202,8 @@ void auton_skills() {
     chassis.set_drive_pid(-24, 110, true);
     chassis.wait_drive();
     chassis.set_turn_pid(45, TURN_SPEED);
+    chassis.wait_drive();
+    chassis.set_drive_pid(12, 110, true);
     chassis.wait_drive();
     EXPAND();
     
@@ -218,7 +220,7 @@ void auton_right() {
     chassis.wait_drive();
     chassis.set_turn_pid(20, TURN_SPEED);
     chassis.wait_drive();
-    shoot(1500, 16250);
+    shoot(1500, 16600);
     chassis.set_turn_pid(-45, TURN_SPEED);
     chassis.wait_drive();
     chassis.set_drive_pid(-16, 110, true);

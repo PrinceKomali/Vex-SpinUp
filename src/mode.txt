@@ -1,1 +1,1 @@
-void autonomous() {auton_left();};
+void autonomous() {auton_right();};
